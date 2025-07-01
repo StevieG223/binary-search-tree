@@ -39,12 +39,65 @@
                 root.right = this.buildTree(array, mid +1, end);                
                 return root;
             }
+            insert(currentNode, data){
+                console.log(currentNode)
+                if (currentNode === null){
+                    return new Node(data);
+                }
+                if (currentNode.data === data){
+                    return new Node(data);
+                }
+                if (data < currentNode.data ){
+                    currentNode.left = this.insert(currentNode.left, data);
+                }else if (data > currentNode.data){
+                    currentNode.right = this.insert(currentNode.right, data);
+                }
+                return currentNode;
+            }
+            delete(currentNode, data){
+                if (currentNode === null){
+                    return currentNode;
+                }else if (currentNode.data > data){
+                    currentNode.left = this.delete(currentNode.left, data);
+                }else if (currentNode.data < data){
+                    currentNode.right = this.delete(currentNode.right, data);
+                }else{
+                    if (currentNode.left === null){
+                        return currentNode.right;
+                    }
+                    if (currentNode.right === null){
+                        return currentNode.left;
+                    }
+                    currentNode = currentNode.right;
+                    while (currentNode !== null && currentNode.left !== null) {
+                    currentNode = currentNode.left;
+                }
+                    return currentNode;
+                }
+
+
+            }
         }
+
+        const prettyPrint = (node, prefix = '', isLeft = true) => {
+            if (node === null) {
+                return;
+            }
+            if (node.right !== null) {
+                prettyPrint(node.right, `${prefix}${isLeft ? '│   ' : '    '}`, false);
+            }
+            console.log(`${prefix}${isLeft ? '└── ' : '┌── '}${node.data}`);
+            if (node.left !== null) {
+                prettyPrint(node.left, `${prefix}${isLeft ? '    ' : '│   '}`, true);
+            }
+            };
 
         myArray = [1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324];
 
         let myBinaryTree = new BinaryTree(myArray);
-        myBinaryTree.buildTree(myBinaryTree.array, 0, myBinaryTree.array.length-1);
+        let myTreesRoot = myBinaryTree.buildTree(myBinaryTree.array, 0, myBinaryTree.array.length-1);
+        myBinaryTree.insert(myBinaryTree.root, 77);
+        myBinaryTree.delete(myBinaryTree.root, 77);
     </script>
 </head>
 <body>
