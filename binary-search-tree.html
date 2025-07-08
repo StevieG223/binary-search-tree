@@ -15,8 +15,9 @@
 
         class BinaryTree{
             constructor(array){
-                this.root = null;
-                this.array = this.sortArray(this.removeDuplicates(array));
+                this.array = this.sortArray(array)
+                this.array = this.removeDuplicates(this.array);
+                this.root = this.buildTree(this.array, 0, this.array.length-1);
             }
             sortArray(array){
                 array.sort((a, b)=>{return a-b});
@@ -27,20 +28,15 @@
                 array = [...set];
                 return array;
             }
-
-            buildTree(array, start=0, end=array.length-1){
+            buildTree(array, start, end){
                 if (start > end) return null;
-                let mid = Math.floor((start + end) / 2);;
+                let mid = start + Math.floor((end - start) / 2);
                 let root = new Node(array[mid]);
-                if (this.root === null) {
-                    this.root = root;
-                }
-                root.left = this.buildTree(array, start, mid-1)
-                root.right = this.buildTree(array, mid +1, end);                
+                root.left = this.buildTree(array, start, mid - 1);
+                root.right = this.buildTree(array, mid + 1, end);
                 return root;
             }
             insert(currentNode, data){
-                console.log(currentNode)
                 if (currentNode === null){
                     return new Node(data);
                 }
@@ -53,6 +49,41 @@
                     currentNode.right = this.insert(currentNode.right, data);
                 }
                 return currentNode;
+            };
+            delete(currentNode, data){
+                if (currentNode === null){
+                    return currentNode;
+                }else if (currentNode.data > data){
+                    currentNode.left = this.delete(currentNode.left, data);
+                }else if (currentNode.data < data){
+                    currentNode.right = this.delete(currentNode.right, data);
+                }else{
+                    if (currentNode.left === null){
+                        return currentNode.right;
+                    }
+                    if (currentNode.right === null){
+                        return currentNode.left;
+                    }
+                    currentNode = currentNode.right;
+                    while (currentNode !== null && currentNode.left !== null) {
+                    currentNode = currentNode.left;
+                    }
+                    return currentNode;
+                } 
+            };
+            search(currentNode, data){
+                if (!currentNode){
+                    return false;
+                }
+                if (currentNode === null || currentNode.data === data)
+                    return currentNode;
+                if (currentNode.data < data)
+                    return this.search(currentNode.right, data);
+                else if (currentNode.data > data){
+                    this.search(currentNode.left, data);
+                }else{
+                    return false;
+                }
             }
             delete(currentNode, data){
                 if (currentNode === null){
@@ -74,10 +105,9 @@
                 }
                     return currentNode;
                 }
-
-
             }
-        }
+        };
+
 
         const prettyPrint = (node, prefix = '', isLeft = true) => {
             if (node === null) {
@@ -90,14 +120,17 @@
             if (node.left !== null) {
                 prettyPrint(node.left, `${prefix}${isLeft ? '    ' : '│   '}`, true);
             }
-            };
+        };
 
         myArray = [1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324];
-
         let myBinaryTree = new BinaryTree(myArray);
-        let myTreesRoot = myBinaryTree.buildTree(myBinaryTree.array, 0, myBinaryTree.array.length-1);
         myBinaryTree.insert(myBinaryTree.root, 77);
-        myBinaryTree.delete(myBinaryTree.root, 77);
+        let results = myBinaryTree.search(myBinaryTree.root, 6345);
+        console.log(results);
+        myBinaryTree.delete(myBinaryTree.root, 6345);
+        results = myBinaryTree.search(myBinaryTree.root, 6345);
+        console.log(results);
+
     </script>
 </head>
 <body>
