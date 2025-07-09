@@ -37,7 +37,7 @@
                 return root;
             }
 
-            insert(currentNode, data){
+            insert(currentNode=this.root, data){
                 if (currentNode === null){
                     return new Node(data);
                 }
@@ -51,7 +51,7 @@
                 }
                 return currentNode;
             };
-            delete(currentNode, data){
+            delete(currentNode=this.root, data){
                 if (currentNode === null){
                     return currentNode;
                 }else if (currentNode.data > data){
@@ -72,7 +72,7 @@
                     return currentNode;
                 } 
             };
-            find(currentNode, data){
+            find(currentNode=this.root, data){
                 if (!currentNode){
                     return false;
                 }
@@ -86,7 +86,7 @@
                     return false;
                 }
             }
-            delete(currentNode, data){
+            delete(currentNode=this.root, data){
                 if (!currentNode){
                      return null;
                 }
@@ -110,7 +110,7 @@
                 }
                 return currentNode;
             }
-            levelOrder(currentNode){
+            levelOrder(currentNode=this.root){
                 let queue = [];
                 let result = [];
                 let currentLevel = 0;
@@ -130,7 +130,7 @@
                 }
                 return result;
             }
-            inOrder(currentNode){
+            inOrder(currentNode=this.root){
                 let result = [];
                 if (currentNode === null) {
                     return;
@@ -144,7 +144,7 @@
                 }
                 return result.flat(Infinity);
             }
-            preOrder(currentNode){
+            preOrder(currentNode=this.root){
                 let result = [];
                 if (currentNode === null) {
                     return;
@@ -158,7 +158,7 @@
                 }
                 return result.flat(Infinity);
             }
-            postOrder(currentNode){
+            postOrder(currentNode=this.root){
                 let result = [];
                 if (currentNode === null) {
                     return;
@@ -172,6 +172,31 @@
                 }
                 return result.flat(Infinity);
             }
+            depth(currentNode=this.root, data, i=0){
+                if (currentNode === null){
+                    return false
+                }
+                if (currentNode.data === data){
+                    return i;
+                }
+                if (currentNode.data < data){
+                    i++;
+                    return this.depth(currentNode.right, data, i)
+                }
+                if (currentNode.data > data){
+                    i++;
+                    return this.depth(currentNode.left, data, i);
+                }
+                return false;
+            }
+            height(currentNode=this.root){
+                if (currentNode === null){
+                    return 0;
+                };
+                return 1+ Math.max((this.height(currentNode.left), this.height(currentNode.right)))
+            }
+            
+
         };
 
 
@@ -201,7 +226,10 @@
         let preOrder = myBinaryTree.preOrder(myBinaryTree.root)
         console.log(preOrder)
         let postOrder = myBinaryTree.postOrder(myBinaryTree.root)
-        console.log(postOrder)
+        console.log(postOrder);
+        let depth = myBinaryTree.depth(myBinaryTree.root, 23)
+        console.log(depth)
+        console.log(myBinaryTree.height())
 
 
     </script>
