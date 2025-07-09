@@ -36,6 +36,7 @@
                 root.right = this.buildTree(array, mid + 1, end);
                 return root;
             }
+
             insert(currentNode, data){
                 if (currentNode === null){
                     return new Node(data);
@@ -71,24 +72,25 @@
                     return currentNode;
                 } 
             };
-            search(currentNode, data){
+            find(currentNode, data){
                 if (!currentNode){
                     return false;
                 }
                 if (currentNode === null || currentNode.data === data)
                     return currentNode;
                 if (currentNode.data < data)
-                    return this.search(currentNode.right, data);
+                    return this.find(currentNode.right, data);
                 else if (currentNode.data > data){
-                    this.search(currentNode.left, data);
+                    this.find(currentNode.left, data);
                 }else{
                     return false;
                 }
             }
             delete(currentNode, data){
-                if (currentNode === null){
-                    return currentNode;
-                }else if (currentNode.data > data){
+                if (!currentNode){
+                     return null;
+                }
+                if (currentNode.data > data){
                     currentNode.left = this.delete(currentNode.left, data);
                 }else if (currentNode.data < data){
                     currentNode.right = this.delete(currentNode.right, data);
@@ -99,13 +101,36 @@
                     if (currentNode.right === null){
                         return currentNode.left;
                     }
-                    currentNode = currentNode.right;
-                    while (currentNode !== null && currentNode.left !== null) {
-                    currentNode = currentNode.left;
+                    let successor = currentNode.right;
+                    if (currentNode !== null && currentNode.left !== null) {
+                        let successor = currentNode.left;
+                    }
+                    currentNode.data = successor.data;
+                    currentNode.right = this.delete(currentNode.right, successor.data);
                 }
-                    return currentNode;
-                }
+                return currentNode;
             }
+            levelOrder(currentNode){
+                let queue = [];
+                let result = [];
+                let currentLevel = 0;
+                queue.push(currentNode);
+                while (queue.length > 0) {
+                    let length = queue.length;
+                    result.push([]);  
+                    for (let i = 0; i < length; i++) {
+                        let node = queue.shift();
+                        result[currentLevel].push(node.data);
+                        if (node.left !== null){
+                            queue.push(node.left)};
+                        if (node.right !== null){
+                            queue.push(node.right)};
+                    }
+                    currentLevel++;
+                }
+                return result;
+            }
+
         };
 
 
@@ -122,14 +147,14 @@
             }
         };
 
-        myArray = [1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324];
+        let myArray = [1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324];
         let myBinaryTree = new BinaryTree(myArray);
         myBinaryTree.insert(myBinaryTree.root, 77);
-        let results = myBinaryTree.search(myBinaryTree.root, 6345);
+        let results = myBinaryTree.find(myBinaryTree.root, 6345);
         console.log(results);
-        myBinaryTree.delete(myBinaryTree.root, 6345);
-        results = myBinaryTree.search(myBinaryTree.root, 6345);
-        console.log(results);
+        myBinaryTree.delete(myBinaryTree.root, 67);
+        let levelOrder = myBinaryTree.levelOrder(myBinaryTree.root)
+        console.log(levelOrder)
 
     </script>
 </head>
