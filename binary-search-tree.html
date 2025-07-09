@@ -195,8 +195,21 @@
                 };
                 return 1+ Math.max((this.height(currentNode.left), this.height(currentNode.right)))
             }
-            
+            isBalanced(currentNode=this.root){
+                if (currentNode === null){
+                    return true};
+                let lHeight = this.height(currentNode.left);
+                let rHeight = this.height(currentNode.right);
+                if (Math.abs(lHeight - rHeight) > 1){
+                    return false;
+                }
+                return this.isBalanced(currentNode.left) && this.isBalanced(currentNode.right);
+            }
 
+            rebalance(currentNode=this.root){
+                let newArray = this.inOrder(currentNode).flat(Infinity);
+                this.root = this.buildTree(newArray, 0, newArray.length-1);                
+            }
         };
 
 
@@ -213,25 +226,34 @@
             }
         };
 
-        let myArray = [1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324];
-        let myBinaryTree = new BinaryTree(myArray);
-        myBinaryTree.insert(myBinaryTree.root, 77);
-        let results = myBinaryTree.find(myBinaryTree.root, 6345);
-        console.log(results);
-        myBinaryTree.delete(myBinaryTree.root, 67);
-        let levelOrder = myBinaryTree.levelOrder(myBinaryTree.root)
-        console.log(levelOrder)
-        let inOrder = myBinaryTree.inOrder(myBinaryTree.root)
-        console.log(inOrder)
-        let preOrder = myBinaryTree.preOrder(myBinaryTree.root)
-        console.log(preOrder)
-        let postOrder = myBinaryTree.postOrder(myBinaryTree.root)
-        console.log(postOrder);
-        let depth = myBinaryTree.depth(myBinaryTree.root, 23)
-        console.log(depth)
-        console.log(myBinaryTree.height())
-
-
+        function driver(){
+            let myArray = [];
+            for (i=0; i<50; i++){
+                let entry = Math.floor(Math.random() * (100 - 0 + 1));
+                myArray.push(entry);
+            }
+            let myBinaryTree = new BinaryTree(myArray);
+            console.log("In level order: ", myBinaryTree.levelOrder());
+            console.log("In order: ", myBinaryTree.inOrder());
+            console.log("In preorder: ", myBinaryTree.preOrder());
+            console.log("In postorder: ", myBinaryTree.postOrder());
+            myBinaryTree.insert(myBinaryTree.root, 1001);
+            myBinaryTree.insert(myBinaryTree.root, 121);
+            myBinaryTree.insert(myBinaryTree.root, 481);
+            myBinaryTree.insert(myBinaryTree.root, 872);
+            myBinaryTree.insert(myBinaryTree.root, 333);
+            myBinaryTree.insert(myBinaryTree.root, 537);
+            console.log("In order after several node insertions: ", myBinaryTree.inOrder());
+            console.log("Is it balanced: ", myBinaryTree.isBalanced());
+            console.log("Rebalancing...");
+            myBinaryTree.rebalance();
+            console.log("Is it balanced: ", myBinaryTree.isBalanced());
+            console.log("In level order: ", myBinaryTree.levelOrder());
+            console.log("In order: ", myBinaryTree.inOrder());
+            console.log("In preorder: ", myBinaryTree.preOrder());
+            console.log("In postorder: ", myBinaryTree.postOrder());
+        }
+        driver();
     </script>
 </head>
 <body>
