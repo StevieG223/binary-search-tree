@@ -130,7 +130,48 @@
                 }
                 return result;
             }
-
+            inOrder(currentNode){
+                let result = [];
+                if (currentNode === null) {
+                    return;
+                }
+                if (currentNode.left !== null){
+                    result.push(this.inOrder(currentNode.left));
+                }
+                result.push([currentNode.data]);
+                if (currentNode.right!== null){
+                    result.push(this.inOrder(currentNode.right));
+                }
+                return result.flat(Infinity);
+            }
+            preOrder(currentNode){
+                let result = [];
+                if (currentNode === null) {
+                    return;
+                }
+                result.push([currentNode.data]);
+                if (currentNode.left !== null){
+                    result.push(this.inOrder(currentNode.left));
+                }
+                if (currentNode.right!== null){
+                    result.push(this.inOrder(currentNode.right));
+                }
+                return result.flat(Infinity);
+            }
+            postOrder(currentNode){
+                let result = [];
+                if (currentNode === null) {
+                    return;
+                }
+                if (currentNode.right!== null){
+                    result.push(this.inOrder(currentNode.right));
+                }
+                result.push([currentNode.data]);
+                if (currentNode.left !== null){
+                    result.push(this.inOrder(currentNode.left));
+                }
+                return result.flat(Infinity);
+            }
         };
 
 
@@ -155,6 +196,13 @@
         myBinaryTree.delete(myBinaryTree.root, 67);
         let levelOrder = myBinaryTree.levelOrder(myBinaryTree.root)
         console.log(levelOrder)
+        let inOrder = myBinaryTree.inOrder(myBinaryTree.root)
+        console.log(inOrder)
+        let preOrder = myBinaryTree.preOrder(myBinaryTree.root)
+        console.log(preOrder)
+        let postOrder = myBinaryTree.postOrder(myBinaryTree.root)
+        console.log(postOrder)
+
 
     </script>
 </head>
